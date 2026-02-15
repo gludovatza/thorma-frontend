@@ -1,0 +1,19 @@
+﻿@page
+@model ThormaFrontend.Pages.Feladatok._5magasModel
+
+<h1>5magas – Legmagasabb kép</h1>
+
+@if (Model.Eredmeny is null)
+{
+    <p>Nincs találat.</p>
+}
+else
+{
+    <dl>
+        <dt>Kép címe</dt>
+        <dd>@Model.Eredmeny.Cim</dd>
+
+        <dt>Festő neve</dt>
+        <dd>@Model.Eredmeny.FestoNev</dd>
+    </dl>
+}

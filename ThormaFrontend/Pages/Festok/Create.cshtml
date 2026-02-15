@@ -1,0 +1,29 @@
+﻿@page
+@model ThormaFrontend.Pages.Festok.CreateModel
+
+<h1>Új festő</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Név</label>
+        <input class="form-control" asp-for="Festo.Nev" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Született</label>
+        <input class="form-control" asp-for="Festo.Szuletett" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Meghalt</label>
+        <input class="form-control" asp-for="Festo.Meghalt" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Mentés</button>
+    <a class="btn btn-secondary" asp-page="./Index">Mégse</a>
+</form>

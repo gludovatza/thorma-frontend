@@ -1,0 +1,29 @@
+﻿@page
+@model ThormaFrontend.Pages.Feladatok._6evekModel
+
+<h1>6evek – Évenként készült képek darabszáma</h1>
+
+@if (Model.Evek.Count == 0)
+{
+    <p>Nincs találat.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Év</th>
+                <th>Darab</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Evek)
+            {
+                <tr>
+                    <td>@e.Keszult</td>
+                    <td>@e.Darab</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

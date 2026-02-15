@@ -1,0 +1,28 @@
+﻿@page "{leltar}"
+@model ThormaFrontend.Pages.Kepek.DeleteModel
+
+<h1>Kép törlése</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<p>Biztosan törlöd?</p>
+
+@if (Model.Kep is not null)
+{
+    <dl>
+        <dt>Leltár</dt>
+        <dd>@Model.Kep.Leltar</dd>
+        <dt>Cím</dt>
+        <dd>@Model.Kep.Cim</dd>
+        <dt>Fazon</dt>
+        <dd>@Model.Kep.Fazon</dd>
+    </dl>
+}
+
+<form method="post">
+    <button class="btn btn-danger" type="submit">Törlés</button>
+    <a class="btn btn-secondary" asp-page="./Index">Mégse</a>
+</form>

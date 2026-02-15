@@ -1,0 +1,39 @@
+﻿@page
+@model ThormaFrontend.Pages.Kepek.IndexModel
+
+<h1>Képek</h1>
+
+<p>
+    <a asp-page="./Create">Új kép</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Leltár</th>
+            <th>Festő</th>
+            <th>Cím</th>
+            <th>Készült</th>
+            <th>Széles</th>
+            <th>Magas</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var k in Model.Kepek)
+        {
+            <tr>
+                <td>@k.Leltar</td>
+                <td>@k.FestoNev</td>
+                <td>@k.Cim</td>
+                <td>@k.Keszult</td>
+                <td>@k.Szeles</td>
+                <td>@k.Magas</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-leltar="@k.Leltar">Szerkeszt</a> |
+                    <a asp-page="./Delete" asp-route-leltar="@k.Leltar">Töröl</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

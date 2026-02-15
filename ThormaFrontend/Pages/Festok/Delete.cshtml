@@ -1,0 +1,26 @@
+﻿@page
+@model ThormaFrontend.Pages.Festok.DeleteModel
+
+<h1>Festő törlése</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<p>Biztosan törlöd?</p>
+
+@if (Model.Festo is not null)
+{
+    <dl>
+        <dt>Azonosító</dt>
+        <dd>@Model.Festo.Azon</dd>
+        <dt>Név</dt>
+        <dd>@Model.Festo.Nev</dd>
+    </dl>
+}
+
+<form method="post">
+    <button class="btn btn-danger" type="submit">Törlés</button>
+    <a class="btn btn-secondary" asp-page="./Index">Mégse</a>
+</form>

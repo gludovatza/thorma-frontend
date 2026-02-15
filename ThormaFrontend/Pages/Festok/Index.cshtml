@@ -1,0 +1,35 @@
+﻿@page
+@model ThormaFrontend.Pages.Festok.IndexModel
+
+<h1>Festők</h1>
+
+<p>
+    <a asp-page="./Create">Új festő</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Azonosító</th>
+            <th>Név</th>
+            <th>Született</th>
+            <th>Meghalt</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var f in Model.Festok)
+        {
+            <tr>
+                <td>@f.Azon</td>
+                <td>@f.Nev</td>
+                <td>@f.Szuletett</td>
+                <td>@f.Meghalt</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-azon="@f.Azon">Szerkeszt</a> |
+                    <a asp-page="./Delete" asp-route-azon="@f.Azon">Töröl</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

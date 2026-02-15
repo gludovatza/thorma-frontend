@@ -1,0 +1,10 @@
+﻿@page
+@model _2haboruModel
+<h1>2haboru – 1914-ben élő festők</h1>
+
+<ul>
+    @foreach (var n in Model.Nevek)
+    {
+        <li>@n</li>
+    }
+</ul>

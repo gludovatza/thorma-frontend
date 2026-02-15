@@ -1,0 +1,57 @@
+﻿@page
+@model ThormaFrontend.Pages.Kepek.CreateModel
+
+<h1>Új kép</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Leltár</label>
+        <input class="form-control" asp-for="Kep.Leltar" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Festő</label>
+        <select class="form-select" asp-for="Kep.Fazon" asp-items="Model.Festok">
+            <option value="">-- Válassz festőt --</option>
+        </select>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Cím</label>
+        <input class="form-control" asp-for="Kep.Cim" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Készült (év)</label>
+        <input class="form-control" asp-for="Kep.Keszult" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Anyag</label>
+        <input class="form-control" asp-for="Kep.Anyag" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Technika</label>
+        <input class="form-control" asp-for="Kep.Technika" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Széles</label>
+        <input class="form-control" asp-for="Kep.Szeles" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Magas</label>
+        <input class="form-control" asp-for="Kep.Magas" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Mentés</button>
+    <a class="btn btn-secondary" asp-page="./Index">Mégse</a>
+</form>

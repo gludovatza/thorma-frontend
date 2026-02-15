@@ -1,0 +1,18 @@
+﻿@page
+@model ThormaFrontend.Pages.Feladatok._3anyagModel
+
+<h1>3anyag – Olaj technikájú képek anyagai</h1>
+
+@if (Model.Anyagok.Count == 0)
+{
+    <p>Nincs találat.</p>
+}
+else
+{
+    <ul>
+        @foreach (var a in Model.Anyagok)
+        {
+            <li>@a</li>
+        }
+    </ul>
+}

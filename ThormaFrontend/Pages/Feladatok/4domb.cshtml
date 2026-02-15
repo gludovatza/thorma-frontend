@@ -1,0 +1,33 @@
+﻿@page
+@model ThormaFrontend.Pages.Feladatok._4dombModel
+
+<h1>4domb – „domb” szót tartalmazó képek</h1>
+
+@if (Model.Kepek.Count == 0)
+{
+    <p>Nincs találat.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cím</th>
+                <th>Szélesség</th>
+                <th>Magasság</th>
+                <th>Festő</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var k in Model.Kepek)
+            {
+                <tr>
+                    <td>@k.Cim</td>
+                    <td>@k.Szeles</td>
+                    <td>@k.Magas</td>
+                    <td>@k.FestoNev</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
