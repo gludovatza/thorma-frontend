@@ -1,3 +1,5 @@
+using ThormaFrontend.Services;
+
 namespace ThormaFrontend
 {
     public class Program
@@ -13,6 +15,10 @@ namespace ThormaFrontend
             {
                 c.BaseAddress = new Uri(builder.Configuration["Api:BaseUrl"]!);
             });
+
+            builder.Services.AddScoped<FestokApi>();
+            builder.Services.AddScoped<KepekApi>();
+            builder.Services.AddScoped<FeladatokApi>();
 
             var app = builder.Build();
 
