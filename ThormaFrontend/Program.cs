@@ -9,6 +9,11 @@ namespace ThormaFrontend
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddHttpClient("ThormaApi", c =>
+            {
+                c.BaseAddress = new Uri(builder.Configuration["Api:BaseUrl"]!);
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
