@@ -19,6 +19,16 @@ namespace ThormaFrontend
                 new HttpClientHandler { UseProxy = false }
             );
 
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddScoped<FestokApi>();
             builder.Services.AddScoped<KepekApi>();
             builder.Services.AddScoped<FeladatokApi>();
@@ -39,6 +49,8 @@ namespace ThormaFrontend
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapRazorPages();
 
