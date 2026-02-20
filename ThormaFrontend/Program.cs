@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using ThormaFrontend.Infrastructure;
 using ThormaFrontend.Services;
 
 namespace ThormaFrontend
@@ -8,8 +10,13 @@ namespace ThormaFrontend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddScoped<AuthPageFilter>();
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages()
+            .AddMvcOptions(options =>
+            {
+                options.Filters.AddService<AuthPageFilter>();
+            });
 
             builder.Services.AddHttpClient("ThormaApi", c =>
             {
@@ -35,7 +42,7 @@ namespace ThormaFrontend
             builder.Services.AddScoped<FeladatokApi>();
             builder.Services.AddScoped<AuthSession>();
             builder.Services.AddScoped<AuthApi>();
-
+            
             builder.Services.AddTransient<JwtBearerHandler>();
 
             var app = builder.Build();
