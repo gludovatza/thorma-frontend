@@ -1,4 +1,6 @@
-﻿namespace ThormaFrontend.Services
+﻿using System.IdentityModel.Tokens.Jwt;
+
+namespace ThormaFrontend.Services
 {
     public class AuthSession
     {
@@ -18,5 +20,16 @@
 
         public bool IsSignedIn
             => !string.IsNullOrWhiteSpace(GetToken());
+
+        public string? GetEmail()
+        {
+            var token = GetToken();
+            if (string.IsNullOrWhiteSpace(token)) return null;
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+
+            return jwt.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+        }
     }
 }

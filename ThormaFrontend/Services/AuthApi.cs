@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-
-namespace ThormaFrontend.Services
+﻿namespace ThormaFrontend.Services
 {
     public class AuthApi
     {
