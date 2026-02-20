@@ -17,7 +17,8 @@ namespace ThormaFrontend
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
                 new HttpClientHandler { UseProxy = false }
-            );
+            )
+            .AddHttpMessageHandler<JwtBearerHandler>();
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
@@ -32,6 +33,10 @@ namespace ThormaFrontend
             builder.Services.AddScoped<FestokApi>();
             builder.Services.AddScoped<KepekApi>();
             builder.Services.AddScoped<FeladatokApi>();
+            builder.Services.AddScoped<AuthSession>();
+            builder.Services.AddScoped<AuthApi>();
+
+            builder.Services.AddTransient<JwtBearerHandler>();
 
             var app = builder.Build();
 
