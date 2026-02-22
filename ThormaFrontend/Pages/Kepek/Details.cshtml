@@ -1,0 +1,39 @@
+﻿@page "{leltar}"
+@model ThormaFrontend.Pages.Kepek.DetailsModel
+
+<h2>Kép adatai</h2>
+
+@if (Model.Kep is null)
+{
+    <div class="alert alert-warning">A kép nem található.</div>
+}
+else
+{
+    <dl class="row">
+        <dt class="col-sm-3">Leltár</dt>
+        <dd class="col-sm-9">@Model.Kep.Leltar</dd>
+
+        <dt class="col-sm-3">Festő neve</dt>
+        <dd class="col-sm-9">@Model.Kep.FestoNev</dd>
+
+        <dt class="col-sm-3">Cím</dt>
+        <dd class="col-sm-9">@Model.Kep.Cim</dd>
+
+        <dt class="col-sm-3">Készült</dt>
+        <dd class="col-sm-9">@Model.Kep.Keszult</dd>
+
+        <dt class="col-sm-3">Anyag</dt>
+        <dd class="col-sm-9">@Model.Kep.Anyag</dd>
+
+        <dt class="col-sm-3">Technika</dt>
+        <dd class="col-sm-9">@Model.Kep.Technika</dd>
+
+        <dt class="col-sm-3">Szélesség</dt>
+        <dd class="col-sm-9">@Model.Kep.Szeles</dd>
+
+        <dt class="col-sm-3">Magasság</dt>
+        <dd class="col-sm-9">@Model.Kep.Magas</dd>
+    </dl>
+
+    <a class="btn btn-secondary" asp-page="./Index">Vissza</a>
+}

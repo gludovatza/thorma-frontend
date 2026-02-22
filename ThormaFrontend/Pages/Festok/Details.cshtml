@@ -1,0 +1,27 @@
+﻿@page "{azon}"
+@model ThormaFrontend.Pages.Festok.DetailsModel
+
+<h2>Festő adatai</h2>
+
+@if (Model.Festo is null)
+{
+    <div class="alert alert-warning">A festő nem található.</div>
+}
+else
+{
+    <dl class="row">
+        <dt class="col-sm-3">Azon</dt>
+        <dd class="col-sm-9">@Model.Festo.Azon</dd>
+
+        <dt class="col-sm-3">Név</dt>
+        <dd class="col-sm-9">@Model.Festo.Nev</dd>
+
+        <dt class="col-sm-3">Született</dt>
+        <dd class="col-sm-9">@Model.Festo.Szuletett</dd>
+
+        <dt class="col-sm-3">Meghalt</dt>
+        <dd class="col-sm-9">@Model.Festo.Meghalt</dd>
+    </dl>
+
+    <a class="btn btn-secondary" asp-page="./Index">Vissza</a>
+}
