@@ -1,12 +1,15 @@
 ﻿@page
 @model ThormaFrontend.Pages.Festok.IndexModel
+@using ThormaFrontend.Services
+@inject AuthSession AuthSession
 
 <h1>Festők</h1>
-
-<p>
-    <a asp-page="./Create">Új festő</a>
-</p>
-
+@if (AuthSession.IsInRole("Admin"))
+{
+    <p>
+        <a asp-page="./Create" class="btn btn-success mb-3">Új festő</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -26,8 +29,17 @@
                 <td>@f.Szuletett</td>
                 <td>@f.Meghalt</td>
                 <td>
-                    <a asp-page="./Edit" asp-route-azon="@f.Azon">Szerkeszt</a> |
-                    <a asp-page="./Delete" asp-route-azon="@f.Azon">Töröl</a>
+                    @if (AuthSession.IsInRole("User") || AuthSession.IsInRole("Admin"))
+                    {
+                        <a asp-page="./Details" asp-route-azon="@f.Azon" class="btn btn-sm btn-outline-primary">Details</a>
+                    }
+                    @if (AuthSession.IsInRole("Admin"))
+                    {
+                        <span> | </span>
+                        <a asp-page="./Edit" asp-route-azon="@f.Azon" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <span> | </span>
+                        <a asp-page="./Delete" asp-route-azon="@f.Azon" class="btn btn-sm btn-outline-danger">Delete</a>
+                    }
                 </td>
             </tr>
         }
