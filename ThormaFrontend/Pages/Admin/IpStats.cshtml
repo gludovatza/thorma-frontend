@@ -1,0 +1,76 @@
+@page
+@model ThormaFrontend.Pages.Admin.IpStatsModel
+@{
+    ViewData["Title"] = "IP címek statisztikái";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="bi bi-hdd-network-fill"></i> IP címek statisztikái
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Admin/Index">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">IP statisztikák</li>
+        </ol>
+    </nav>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    @if (Model.IpStats != null && Model.IpStats.Any())
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">IP címek aktivitása (@Model.IpStats.Count)</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>IP cím</th>
+                                <th class="text-end">Összes kérés</th>
+                                <th class="text-end">Sikertelen belépés</th>
+                                <th class="text-end">Egyedi felhasználók</th>
+                                <th>Utolsó aktivitás</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ipStat in Model.IpStats)
+                            {
+                                <tr class="@(ipStat.FailedLogins > 5 ? "table-warning" : "")">
+                                    <td><code>@ipStat.IpAddress</code></td>
+                                    <td class="text-end">@ipStat.TotalRequests</td>
+                                    <td class="text-end">
+                                        @if (ipStat.FailedLogins > 0)
+                                        {
+                                            <span class="badge bg-danger">@ipStat.FailedLogins</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">0</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">@ipStat.UniqueUsers</td>
+                                    <td>@ipStat.LastActivity.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Nincs megjeleníthető IP statisztika.
+        </div>
+    }
+</div>

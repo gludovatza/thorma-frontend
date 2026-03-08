@@ -1,0 +1,96 @@
+@page
+@model ThormaFrontend.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Felhasználók kezelése";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="bi bi-people-fill"></i> Felhasználók kezelése
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Admin/Index">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Felhasználók</li>
+        </ol>
+    </nav>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    @if (Model.Users != null && Model.Users.Any())
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Összes felhasználó (@Model.Users.Count)</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>E-mail cím</th>
+                                <th>Szerepkörök</th>
+                                <th>Utolsó aktivitás</th>
+                                <th class="text-end">Műveletek</th>
+                                <th class="text-end">Sikertelen belépés</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        @foreach (var role in user.Roles)
+                                        {
+                                            <span class="badge @(role == "Admin" ? "bg-danger" : "bg-warning")">@role</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.LastActivity.HasValue)
+                                        {
+                                            @user.LastActivity.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Nincs adat</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">@user.TotalActions</td>
+                                    <td class="text-end">
+                                        @if (user.FailedLoginAttempts > 0)
+                                        {
+                                            <span class="badge bg-danger">@user.FailedLoginAttempts</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">0</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <a asp-page="/Admin/UserDetails" asp-route-id="@user.UserId" class="btn btn-sm btn-primary">
+                                            Részletek
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Nincs megjeleníthető felhasználó.
+        </div>
+    }
+</div>
