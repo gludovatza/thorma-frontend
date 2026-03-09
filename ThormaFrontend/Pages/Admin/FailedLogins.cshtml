@@ -1,0 +1,90 @@
+@page
+@model ThormaFrontend.Pages.Admin.FailedLoginsModel
+@{
+    ViewData["Title"] = "Sikertelen bejelentkezések";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="bi bi-shield-exclamation"></i> Sikertelen bejelentkezések
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Admin/Index">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sikertelen bejelentkezések</li>
+        </ol>
+    </nav>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label for="days" class="form-label">Időszak (napok)</label>
+                    <select class="form-select" id="days" name="days">
+                        <option value="1" selected="@(Model.Days == 1)">1 nap</option>
+                        <option value="7" selected="@(Model.Days == 7)">7 nap</option>
+                        <option value="14" selected="@(Model.Days == 14)">14 nap</option>
+                        <option value="30" selected="@(Model.Days == 30)">30 nap</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Frissítés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.FailedLogins != null && Model.FailedLogins.Any())
+    {
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Sikertelen bejelentkezési kísérletek (@Model.FailedLogins.Count)</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>Időpont</th>
+                                <th>E-mail cím</th>
+                                <th>IP cím</th>
+                                <th>Útvonal</th>
+                                <th>Státusz</th>
+                                <th>Üzenet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model.FailedLogins)
+                            {
+                                <tr>
+                                    <td class="text-nowrap">@log.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    <td>@(log.UserEmail ?? "-")</td>
+                                    <td><small>@(log.IpAddress ?? "-")</small></td>
+                                    <td><small>@log.Path</small></td>
+                                    <td>
+                                        <span class="badge bg-danger">@log.StatusCode</span>
+                                    </td>
+                                    <td><small>@(log.Message ?? "-")</small></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <i class="bi bi-check-circle"></i> Nincsenek sikertelen bejelentkezési kísérletek az elmúlt @Model.Days napban.
+        </div>
+    }
+</div>

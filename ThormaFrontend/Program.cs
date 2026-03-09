@@ -42,7 +42,8 @@ namespace ThormaFrontend
             builder.Services.AddScoped<FeladatokApi>();
             builder.Services.AddScoped<AuthSession>();
             builder.Services.AddScoped<AuthApi>();
-            
+            builder.Services.AddScoped<AdminApi>();
+
             builder.Services.AddTransient<JwtBearerHandler>();
 
             var app = builder.Build();

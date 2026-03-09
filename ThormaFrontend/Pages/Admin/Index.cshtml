@@ -1,0 +1,116 @@
+@page
+@model ThormaFrontend.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="bi bi-speedometer2"></i> Admin Dashboard
+    </h1>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    @if (Model.Stats != null)
+    {
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Összes felhasználó</h5>
+                        <h2 class="mb-0">@Model.Stats.TotalUsers</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Aktív ma</h5>
+                        <h2 class="mb-0">@Model.Stats.ActiveUsersToday</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Összes log</h5>
+                        <h2 class="mb-0">@Model.Stats.TotalLogs</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">Sikertelen belépés ma</h5>
+                        <h2 class="mb-0">@Model.Stats.FailedLoginAttemptsToday</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Stats.TopActions.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Top 10 műveletek</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Entitás típus</th>
+                                <th>Művelet</th>
+                                <th class="text-end">Darabszám</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var action in Model.Stats.TopActions)
+                            {
+                                <tr>
+                                    <td>@action.EntityType</td>
+                                    <td>@action.Action</td>
+                                    <td class="text-end">@action.Count</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Gyors hivatkozások</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a asp-page="/Admin/Users" class="list-group-item list-group-item-action">
+                            <strong>Felhasználók kezelése</strong>
+                            <p class="mb-0 text-muted">Összes felhasználó listázása aktivitási adatokkal</p>
+                        </a>
+                        <a asp-page="/Admin/Logs" class="list-group-item list-group-item-action">
+                            <strong>Logok megtekintése</strong>
+                            <p class="mb-0 text-muted">Rendszer naplók szűréssel és lapozással</p>
+                        </a>
+                        <a asp-page="/Admin/FailedLogins" class="list-group-item list-group-item-action">
+                            <strong>Sikertelen bejelentkezések</strong>
+                            <p class="mb-0 text-muted">Sikertelen hitelesítési kísérletek áttekintése</p>
+                        </a>
+                        <a asp-page="/Admin/IpStats" class="list-group-item list-group-item-action">
+                            <strong>IP statisztikák</strong>
+                            <p class="mb-0 text-muted">Tevékenységek IP címenként</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

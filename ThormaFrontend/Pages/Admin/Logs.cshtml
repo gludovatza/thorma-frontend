@@ -1,0 +1,160 @@
+@page
+@model ThormaFrontend.Pages.Admin.LogsModel
+@{
+    ViewData["Title"] = "Rendszer logok";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">
+        <i class="bi bi-file-text-fill"></i> Rendszer logok
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Admin/Index">Admin</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Logok</li>
+        </ol>
+    </nav>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Szűrők</h5>
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="userEmail" class="form-label">E-mail cím</label>
+                        <input type="text" class="form-control" id="userEmail" name="userEmail" value="@Model.UserEmail" placeholder="Felhasználó e-mail">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="entityType" class="form-label">Entitás típus</label>
+                        <input type="text" class="form-control" id="entityType" name="entityType" value="@Model.EntityType" placeholder="pl. Festo, Kep">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="isAuthFailure" class="form-label">Típus</label>
+                        <select class="form-select" id="isAuthFailure" name="isAuthFailure">
+                            <option value="">Összes</option>
+                            <option value="true" selected="@(Model.IsAuthFailure == true)">Sikertelen auth</option>
+                            <option value="false" selected="@(Model.IsAuthFailure == false)">Sikeres</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="pageSize" class="form-label">Oldal méret</label>
+                        <select class="form-select" id="pageSize" name="pageSize">
+                            <option value="25" selected="@(Model.PageSize == 25)">25</option>
+                            <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                            <option value="100" selected="@(Model.PageSize == 100)">100</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Szűrés</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.LogsData != null)
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Logok (Összesen: @Model.LogsData.TotalCount)</h5>
+                <span class="badge bg-secondary">Oldal @Model.LogsData.Page / @Model.LogsData.TotalPages</span>
+            </div>
+            <div class="card-body">
+                @if (Model.LogsData.Logs.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Időpont</th>
+                                    <th>Felhasználó</th>
+                                    <th>Metódus</th>
+                                    <th>Útvonal</th>
+                                    <th>Státusz</th>
+                                    <th>Entitás</th>
+                                    <th>Művelet</th>
+                                    <th>IP cím</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var log in Model.LogsData.Logs)
+                                {
+                                    <tr class="@(log.IsAuthFailure ? "table-danger" : "")">
+                                        <td>@log.Id</td>
+                                        <td class="text-nowrap"><small>@log.Timestamp.ToString("MM-dd HH:mm:ss")</small></td>
+                                        <td><small>@(log.UserEmail ?? "-")</small></td>
+                                        <td><span class="badge bg-secondary">@log.HttpMethod</span></td>
+                                        <td><small>@log.Path</small></td>
+                                        <td>
+                                            <span class="badge @(log.StatusCode >= 200 && log.StatusCode < 300 ? "bg-success" : log.StatusCode >= 400 ? "bg-danger" : "bg-warning")">
+                                                @log.StatusCode
+                                            </span>
+                                        </td>
+                                        <td><small>@(log.EntityType ?? "-")</small></td>
+                                        <td><small>@(log.Action ?? "-")</small></td>
+                                        <td><small>@(log.IpAddress ?? "-")</small></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            @if (Model.LogsData.Page > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-page="/Admin/Logs" 
+                                       asp-route-page="@(Model.LogsData.Page - 1)" 
+                                       asp-route-pageSize="@Model.PageSize"
+                                       asp-route-userEmail="@Model.UserEmail"
+                                       asp-route-entityType="@Model.EntityType"
+                                       asp-route-isAuthFailure="@Model.IsAuthFailure">Előző</a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, Model.LogsData.Page - 2); i <= Math.Min(Model.LogsData.TotalPages, Model.LogsData.Page + 2); i++)
+                            {
+                                <li class="page-item @(i == Model.LogsData.Page ? "active" : "")">
+                                    <a class="page-link" asp-page="/Admin/Logs" 
+                                       asp-route-page="@i" 
+                                       asp-route-pageSize="@Model.PageSize"
+                                       asp-route-userEmail="@Model.UserEmail"
+                                       asp-route-entityType="@Model.EntityType"
+                                       asp-route-isAuthFailure="@Model.IsAuthFailure">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.LogsData.Page < Model.LogsData.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-page="/Admin/Logs" 
+                                       asp-route-page="@(Model.LogsData.Page + 1)" 
+                                       asp-route-pageSize="@Model.PageSize"
+                                       asp-route-userEmail="@Model.UserEmail"
+                                       asp-route-entityType="@Model.EntityType"
+                                       asp-route-isAuthFailure="@Model.IsAuthFailure">Következő</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+                else
+                {
+                    <p class="text-muted">Nincs megjeleníthető log bejegyzés a megadott szűrőkkel.</p>
+                }
+            </div>
+        </div>
+    }
+</div>
